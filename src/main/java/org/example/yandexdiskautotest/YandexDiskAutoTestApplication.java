@@ -17,7 +17,7 @@ public class YandexDiskAutoTestApplication
 
 
 
-    static String token = "y0__xDhxNe1AhiH9T4g4qOZ3hYw1tea2wiaSQDAbPs3YJWWjJfHDQkcPmLHjQ";
+    static String token = "";
 
 
 
