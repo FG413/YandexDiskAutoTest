@@ -10,7 +10,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.RequestEntity.BodyBuilder;
 
@@ -20,6 +25,7 @@ import tools.jackson.databind.ObjectMapper;
 @SpringBootApplication
 public class YandexDiskAutoTestApplication
 {
+
     public static HttpClient  client = HttpClient.newHttpClient();
 
     public static HttpRequest.Builder builder = HttpRequest.newBuilder()
@@ -28,7 +34,7 @@ public class YandexDiskAutoTestApplication
     public static void main(String[] args) throws IOException, InterruptedException
     {
 
-        getContent();
+        restoreContentFromTrash(); // need to edit
 
 
     }
@@ -70,14 +76,11 @@ public class YandexDiskAutoTestApplication
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        JsonNode jsonNode = objectMapper.readTree(response.body());
-        //src/main/resources/static/img.png
-        File convFile = new File("src/main/resources/static/img.png");
+        JSONObject jsonObject = new JSONObject(response.body());
 
-        System.out.println(convFile.getAbsolutePath());
         // 4. Process the response
         System.out.println("Status Code: " + response.statusCode());
-        System.out.println("Response Body: " + jsonNode);
+        System.out.println("Response Body: " + jsonObject.getJSONObject("system_folders"));
     }
 
     public static void postContent() throws IOException, InterruptedException
@@ -97,6 +100,211 @@ public class YandexDiskAutoTestApplication
 
         // 4. Process the response
         System.out.println("Status Code: " + response.statusCode());
+    }
+
+    public static void postContentWithUrl() throws IOException, InterruptedException
+    {
+
+        File convFile = new File("src/main/resources/static/img.png");
+        HttpRequest request = builder
+                .uri(URI.create("https://uploader358klg.disk.yandex.net:443/upload-target/20260315T210010.682.utd.ahy55rcvtyv7fl4c4ua3zpeh9-k358klg.4096598"))
+                .PUT(HttpRequest.BodyPublishers.ofFile(convFile.toPath())) // Default method, but explicitly set here
+                .build();
+
+        // 3. Send the request and receive the response synchronously
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+
+        // 4. Process the response
+        System.out.println("Status Code: " + response.statusCode());
+    }
+
+    public static void deleteContentInTrash() throws IOException, InterruptedException
+    {
+        HttpRequest request = builder
+                .uri(URI.create("https://cloud-api.yandex.net/v1/disk"))
+                .GET() // Default method, but explicitly set here
+                .build();
+
+        // 3. Send the request and receive the response synchronously
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode jsonNode = objectMapper.readTree(response.body());
+        //src/main/resources/static/img.png
+        File convFile = new File("src/main/resources/static/img.png");
+
+        System.out.println(convFile.getAbsolutePath());
+        // 4. Process the response
+        System.out.println("Status Code: " + response.statusCode());
+        System.out.println("Response Body: " + jsonNode);
+    }
+
+    public static void deleteContentWithoutTrash() throws IOException, InterruptedException
+    {
+        HttpRequest request = builder
+                .uri(URI.create("https://cloud-api.yandex.net/v1/disk"))
+                .GET() // Default method, but explicitly set here
+                .build();
+
+        // 3. Send the request and receive the response synchronously
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode jsonNode = objectMapper.readTree(response.body());
+        //src/main/resources/static/img.png
+        File convFile = new File("src/main/resources/static/img.png");
+
+        System.out.println(convFile.getAbsolutePath());
+        // 4. Process the response
+        System.out.println("Status Code: " + response.statusCode());
+        System.out.println("Response Body: " + jsonNode);
+    }
+
+    public static void postFolder() throws IOException, InterruptedException
+    {
+        HttpRequest request = builder
+                .uri(URI.create("https://cloud-api.yandex.net/v1/disk"))
+                .GET() // Default method, but explicitly set here
+                .build();
+
+        // 3. Send the request and receive the response synchronously
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode jsonNode = objectMapper.readTree(response.body());
+        //src/main/resources/static/img.png
+        File convFile = new File("src/main/resources/static/img.png");
+
+        System.out.println(convFile.getAbsolutePath());
+        // 4. Process the response
+        System.out.println("Status Code: " + response.statusCode());
+        System.out.println("Response Body: " + jsonNode);
+    }
+
+    public static void copyContent() throws IOException, InterruptedException
+    {
+        HttpRequest request = builder
+                .uri(URI.create("https://cloud-api.yandex.net/v1/disk"))
+                .GET() // Default method, but explicitly set here
+                .build();
+
+        // 3. Send the request and receive the response synchronously
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode jsonNode = objectMapper.readTree(response.body());
+        //src/main/resources/static/img.png
+        File convFile = new File("src/main/resources/static/img.png");
+
+        System.out.println(convFile.getAbsolutePath());
+        // 4. Process the response
+        System.out.println("Status Code: " + response.statusCode());
+        System.out.println("Response Body: " + jsonNode);
+    }
+
+    public static void downloadContent() throws IOException, InterruptedException
+    {
+        HttpRequest request = builder
+                .uri(URI.create("https://cloud-api.yandex.net/v1/disk"))
+                .GET() // Default method, but explicitly set here
+                .build();
+
+        // 3. Send the request and receive the response synchronously
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode jsonNode = objectMapper.readTree(response.body());
+        //src/main/resources/static/img.png
+        File convFile = new File("src/main/resources/static/img.png");
+
+        System.out.println(convFile.getAbsolutePath());
+        // 4. Process the response
+        System.out.println("Status Code: " + response.statusCode());
+        System.out.println("Response Body: " + jsonNode);
+    }
+
+    public static void moveContent() throws IOException, InterruptedException
+    {
+        HttpRequest request = builder
+                .uri(URI.create("https://cloud-api.yandex.net/v1/disk"))
+                .GET() // Default method, but explicitly set here
+                .build();
+
+        // 3. Send the request and receive the response synchronously
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode jsonNode = objectMapper.readTree(response.body());
+        //src/main/resources/static/img.png
+        File convFile = new File("src/main/resources/static/img.png");
+
+        System.out.println(convFile.getAbsolutePath());
+        // 4. Process the response
+        System.out.println("Status Code: " + response.statusCode());
+        System.out.println("Response Body: " + jsonNode);
+    }
+
+    public static void getContentFromTrash() throws IOException, InterruptedException
+    {
+        HttpRequest request = builder
+                .uri(URI.create("https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash:/"))
+                .GET() // Default method, but explicitly set here
+                .build();
+
+        // 3. Send the request and receive the response synchronously
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        JSONObject jsonObject = new JSONObject(response.body());
+        // 4. Process the response
+        System.out.println("Status Code: " + response.statusCode());
+        System.out.println("Response Body: " + jsonObject.getJSONObject("_embedded"));
+    }
+
+    public static void restoreContentFromTrash() throws IOException, InterruptedException
+    {
+        HttpRequest request = builder
+                .uri(URI.create("https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash:/"))
+                .GET() // Default method, but explicitly set here
+                .build();
+
+        // 3. Send the request and receive the response synchronously
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+        JSONObject jsonObject = new JSONObject(response.body());
+        String path = null;
+        JSONArray jsonArray = jsonObject.getJSONObject("_embedded").getJSONArray("items");
+        for(int i = 0; i< jsonArray.length(); i++){
+            System.out.println(jsonArray.getJSONObject(i).getString("name"));
+            if(jsonArray.getJSONObject(i).getString("name").equals("Моxе.jpg")) {
+                path = jsonArray.getJSONObject(i).getString("path");
+                break;
+            }
+        }
+
+        HttpRequest request2 = builder
+                .uri(URI.create("https://cloud-api.yandex.net/v1/disk/trash/resources/restore?path=" + path))
+                .PUT(HttpRequest.BodyPublishers.ofString("")) // Default method, but explicitly set here
+                .build();
+        HttpResponse<String> response2 = client.send(request2, HttpResponse.BodyHandlers.ofString());
+        System.out.println(path);
+        System.out.println(response2.body());
+        // 4. Process the response
+        HttpRequest request3 = builder
+                .uri(URI.create("https://cloud-api.yandex.net/v1/disk/resources?path=" + "disk:/Моxе.jpg"))
+                .GET() // Default method, but explicitly set here
+                .build();
+        HttpResponse<String> response3 = client.send(request3, HttpResponse.BodyHandlers.ofString());
+        System.out.println("Status Code: " + response3.statusCode());
+        System.out.println("Response Body: " + jsonObject.getJSONObject("_embedded").getJSONArray("items").getJSONObject(0));
     }
 
 }
